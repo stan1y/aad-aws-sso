@@ -2,7 +2,6 @@
     Requires valid AWS credentials in the master account of the organization.
 '''
 import os
-import yaml
 import pathlib
 import logging
 import threading

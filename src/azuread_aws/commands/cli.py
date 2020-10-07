@@ -27,7 +27,7 @@ def main():
     parser = argparse.ArgumentParser(
         description='AzureAD and AWS command line toolkit. Version: {ver}. {doc}'.format(
             doc=__doc__,
-            ver=pkg_resources.get_distribution("azuread_aws").version
+            ver=pkg_resources.get_distribution("aad-aws-sso").version
         ))
     parser.add_argument(
         '-s', '--silent', action='store_true',

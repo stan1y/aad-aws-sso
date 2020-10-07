@@ -2,7 +2,6 @@
     organization accounts. Uses Graph API to modify Azure AD Application Manifest.
 '''
 import os
-import yaml
 import uuid
 import logging
 
