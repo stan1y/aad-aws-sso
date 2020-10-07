@@ -24,7 +24,7 @@ with open('VERSION', 'r') as f:
 
 # Install package
 setup(
-    name='azuread_aws',
+    name='aad-aws-sso',
     packages=[
         'azuread_aws',
     ],
