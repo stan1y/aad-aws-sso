@@ -30,7 +30,7 @@ And support Python 3.6+.
 
 This utility assumes that organization in AWS has already been configured with appropriate
 IAM Roles which are available to be assumed with SAML. The [cloudformation](./cloudformation)
-folder contains examples of user managed policies and roles as a CloudFormation templates.
+folder contains examples of roles as a CloudFormation template.
 This templates can be deployed as Stack Sets across organizational units or specific accounts.
 
 Configuration of Azure AD Application Roles with this utility requires names of such roles
