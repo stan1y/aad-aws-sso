@@ -34,12 +34,13 @@ def new_app_role(options):
     token = auth.get_bearer_token('https://graph.microsoft.com')
     application = graph_api.get_application(token)
     iam_role_arn = f'arn:aws:iam::{options.account_id}:role/aad/{options.aws_role_name}'
-    app_role_name = f'{options.aws_role_name}/{options.account_id}'
+    if options.app_role_name:
+        options.app_role_name = f'{options.aws_role_name}/{options.account_id}'
     saml_provider_arn = f'arn:aws:iam::{options.account_id}:saml-provider/AAD'
     app_role = {
         'allowedMemberTypes': ['User'],
         'description': f'{options.aws_role_name}@{options.account_id}',
-        'displayName': app_role_name,
+        'displayName': options.app_role_name,
         'id': str(uuid.uuid4()),
         'isEnabled': True,
         'origin': 'Application',
@@ -88,8 +89,8 @@ def show_app_role_info(options):
         if iam_role.name == aws_role_name:
             role_arn = iam_role.arn
             break
-    log.info('ID: %s, Name: %s', app_role['id'], options.role_name)
-    log.info('AWS Account: %s, Role Name: %s, Role ARN: %s', aws_account_id, aws_role_name, role_arn)
+    log.info('AzureAD App Role ID: %s, Name: %s', app_role['id'], options.role_name)
+    log.info('AWS Account: %s, AWS Role Name: %s, AWS Role ARN: %s', aws_account_id, aws_role_name, role_arn)
 
 
 def arguments(parser):
@@ -107,5 +108,5 @@ def arguments(parser):
     new_cmd = subparsers.add_parser('new', help=new_app_role.__doc__)
     new_cmd.add_argument('-n', '--aws-role-name', required=True, help='Name of the AWS role to use.')
     new_cmd.add_argument('-a', '--account-id', required=True, help='AWS Account ID the role exists in.')
-    new_cmd.add_argument('-d', '--app-role-name', help='Name of the new app role name.')
+    new_cmd.add_argument('-d', '--app-role-name', help='Name of the new app role name. Defaults to "$aws-role-name/$account-id".')
     new_cmd.set_defaults(cmd=new_app_role)

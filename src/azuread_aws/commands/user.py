@@ -87,7 +87,7 @@ def show_user_info(options):
     log.info('User id: %s, name: %s', user['id'], user['displayName'])
     log.info('Assignments:')
     for app_role in app_roles:
-        app_role_name = app_role['displayName'].replace('AWS/', '')
+        app_role_name = app_role['displayName']
         if app_role['value']:
             role_arn, idp_arn = app_role['value'].split(',')
             log.info('Role id: %s, name: %s, AWS Role Arn: %s', app_role['id'], app_role_name, role_arn)
