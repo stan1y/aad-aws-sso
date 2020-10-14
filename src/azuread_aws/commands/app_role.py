@@ -25,8 +25,24 @@ def list_app_roles(options):
             log.warning('Found app role %s without expected description format', app_role['displayName'])
             continue
         aws_role_name, aws_account_id = app_role['description'].split('@')
-        log.info('Found id: %s, name: %s, aws role: %s, aws account: %s', app_role['id'], app_role['displayName'].replace('AWS/', ''),
+        log.info('Found id: %s, name: %s, aws role: %s, aws account: %s', app_role['id'], app_role['displayName'],
                  aws_role_name, aws_account_id)
+
+
+def delete_app_role(options):
+    '''Delete existing app role from application manifest'''
+    token = auth.get_bearer_token('https://graph.microsoft.com')
+    application = graph_api.get_application(token)
+    app_role = find_app_role_by_name(options.role_name, application['appRoles'])
+    if not app_role:
+        raise Exception(f'AWS App role with name {options.role_name} was not found')
+
+    app_role['isEnabled'] = False
+    graph_api.patch_application(token, application)
+
+    application['appRoles'].remove(app_role)
+    graph_api.patch_application(token, application)
+    log.info('Deleted app role [%s] "%s"', app_role['id'], app_role['displayName'])
 
 
 def new_app_role(options):
@@ -77,7 +93,6 @@ def show_app_role_info(options):
     '''Information about app role.'''
     token = auth.get_bearer_token('https://graph.microsoft.com')
     application = graph_api.get_application(token)
-
     app_role = find_app_role_by_name(options.role_name, application['appRoles'])
     if not app_role:
         raise Exception(f'AWS App role with name {options.role_name} was not found')
@@ -104,6 +119,10 @@ def arguments(parser):
     info_cmd = subparsers.add_parser('info', help=show_app_role_info.__doc__)
     info_cmd.add_argument('role_name')
     info_cmd.set_defaults(cmd=show_app_role_info)
+
+    rm_cmd = subparsers.add_parser('rm', help=delete_app_role.__doc__)
+    rm_cmd.add_argument('role_name')
+    rm_cmd.set_defaults(cmd=delete_app_role)
 
     new_cmd = subparsers.add_parser('new', help=new_app_role.__doc__)
     new_cmd.add_argument('-n', '--aws-role-name', required=True, help='Name of the AWS role to use.')
