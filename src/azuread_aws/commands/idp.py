@@ -60,15 +60,18 @@ def ls(options):
     for account_name, account_id in accounts.items():
         if account_id == master_id:
             continue
-        account_resources = amazon.resource('iam', account_id)
-        found = False
-        for saml_provider in account_resources.saml_providers.all():
-            if 'AAD' in saml_provider.arn:
-                log.info(f'Found SAML provider [{saml_provider.arn}] in {account_name} ({account_id})')
-                found = True
-                break
-        if not found:
-            log.info(f'No SAML rovider found in account {account_name} ({account_id})')
+        try:
+            account_resources = amazon.resource('iam', account_id)
+            found = False
+            for saml_provider in account_resources.saml_providers.all():
+                if 'AAD' in saml_provider.arn:
+                    log.info(f'Found SAML provider [{saml_provider.arn}] in {account_name} ({account_id})')
+                    found = True
+                    break
+            if not found:
+                log.info(f'No SAML rovider found in account {account_name} ({account_id})')
+        except Exception as ex:
+            log.warning(f'Failed to assume role in {account_id}')
 
 
 def configure(options):

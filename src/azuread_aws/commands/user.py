@@ -106,10 +106,10 @@ def arguments(parser):
 
     assign_cmd = subparsers.add_parser('assign', help=assign_user.__doc__)
     assign_cmd.add_argument('user_email', help='Email name of the user')
-    assign_cmd.add_argument('role_name', help='AWS Application Role name to assign.')
+    assign_cmd.add_argument('role_name', help='AzureAD App Role name to assign.')
     assign_cmd.set_defaults(cmd=assign_user)
 
     remove_cmd = subparsers.add_parser('unassign', help=unassign_user.__doc__)
     remove_cmd.add_argument('user_email', help='Email name of the user')
-    remove_cmd.add_argument('role_name', help='AWS Application Role name to remove.')
+    remove_cmd.add_argument('role_name', help='AzureAD App Role name to remove.')
     remove_cmd.set_defaults(cmd=unassign_user)

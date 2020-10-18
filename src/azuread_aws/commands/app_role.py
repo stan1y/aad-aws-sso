@@ -50,7 +50,7 @@ def new_app_role(options):
     token = auth.get_bearer_token('https://graph.microsoft.com')
     application = graph_api.get_application(token)
     iam_role_arn = f'arn:aws:iam::{options.account_id}:role/aad/{options.aws_role_name}'
-    if options.app_role_name:
+    if not options.app_role_name:
         options.app_role_name = f'{options.aws_role_name}/{options.account_id}'
     saml_provider_arn = f'arn:aws:iam::{options.account_id}:saml-provider/AAD'
     app_role = {

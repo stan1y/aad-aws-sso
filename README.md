@@ -39,13 +39,20 @@ to be known before using it.
 ### Using the utility
 
 * Define a new AzureAD App Role corresponding to an AWS IAM Role in an account.
-  `aad-aws role new -a <account_id> -n <iam role name>`
-  This will modify application manifest in Azure AD to add a new App Role with
-  name `<iam role name>/<account id>`.
+  ```
+  aad-aws role new -a <account_id> -n <iam role name>
+  ```
+  This will modify application manifest in Azure AD to add a new App Role with name `<iam role name>/<account id>`.
 * List available AzureAD App Roles for AWS Application
-  `aad-aws role ls`
+  ```
+  aad-aws role ls
+  ```
   This command lists app roles in the manifest.
 * List assignments of a user
-  `aad-aws user info <user email>  `
+  ```
+  aad-aws user info <user email> 
+  ```
 * Assign app role by name to a user
-  `aad-aws user assign <user email> <iam role name>/<account id>`
+  ```
+  aad-aws user assign <user email> <iam role name>/<account id>
+  ```
